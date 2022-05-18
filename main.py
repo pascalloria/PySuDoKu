@@ -9,7 +9,7 @@ import random
 HEIGHT = 9
 WIDTH = 9
 
-grid = []
+
 numbers = range(1, WIDTH + 1)
 
 
@@ -35,7 +35,7 @@ def random_append(list1, list2):
 
 
 def generate_grid():
-    # create grid
+    grid = []
     for i in range(HEIGHT):
         # generate row with no duplicates HEIGHT time
         grid.append(random.sample(numbers, WIDTH))
@@ -110,9 +110,6 @@ def generate_grid():
         else:
             generate_grid()
             return
-
-    # first square
-
     # LIGNE 2 et 3 du carré 1
     for a in range(4, 6):
         for i in range(0, 3):
@@ -125,10 +122,7 @@ def generate_grid():
             else:
                 generate_grid()
                 return
-
-    # carré 2
-
-    for a in range(4, 6):
+        # LIGNE 2 et 3 du carré 2
         for i in range(3, 6):
             numbers_free = generate_number()
             substract_list_in_list(grid[a][:3], numbers_free)
@@ -140,10 +134,7 @@ def generate_grid():
             else:
                 generate_grid()
                 return
-
-    # carré 3
-
-    for a in range(4, 6):
+        # LIGNE 2 et 3 du carré 3
         for i in range(6, 9):
             numbers_free = generate_number()
             substract_list_in_list(grid[a][:6], numbers_free)
@@ -155,6 +146,65 @@ def generate_grid():
             else:
                 generate_grid()
                 return
+    "===========BOT=============="
+    numbers_rows = [[], [], []]
+    for j in range(0, 9):
+        numbers_free = generate_number()
+        for i in range(0, 6):
+            for elem in numbers_rows:
+                substract_list_in_list(elem, numbers_free)
+            search_remove(grid[i][j], numbers_free)
+            for e in numbers_rows:
+                search_remove(e, numbers_free)
+        if len(numbers_free) >= 1:
+            grid[6][j] = random.choice(numbers_free)
+            if j in range(0, 3):
+                numbers_rows[0].append(grid[6][j])
+            elif j in range(3, 6):
+                numbers_rows[1].append(grid[6][j])
+            else:
+                numbers_rows[2].append(grid[6][j])
+        else:
+            generate_grid()
+            return
+    # LIGNE 2 et 3 du carré 1
+    for a in range(7, 9):
+        for i in range(0, 3):
+            numbers_free = generate_number()
+            substract_list_in_list(numbers_rows[0], numbers_free)
+            for j in range(0, a):
+                search_remove(grid[j][i], numbers_free)
+            if len(numbers_free) >= 1:
+                grid[a][i] = random_append(numbers_free, numbers_rows[0])
+            else:
+                generate_grid()
+                return
+        # LIGNE 2 et 3 du carré 2
+        for i in range(3, 6):
+            numbers_free = generate_number()
+            substract_list_in_list(grid[a][:3], numbers_free)
+            substract_list_in_list(numbers_rows[1], numbers_free)
+            for j in range(0, a):
+                search_remove(grid[j][i], numbers_free)
+            if len(numbers_free) >= 1:
+                grid[a][i] = random_append(numbers_free, numbers_rows[1])
+            else:
+                generate_grid()
+                return
+        # LIGNE 2 et 3 du carré 3
+        for i in range(6, 9):
+            numbers_free = generate_number()
+            substract_list_in_list(grid[a][:6], numbers_free)
+            substract_list_in_list(numbers_rows[2], numbers_free)
+            for j in range(0, a):
+                search_remove(grid[j][i], numbers_free)
+            if len(numbers_free) >= 1:
+                grid[a][i] = random_append(numbers_free, numbers_rows[2])
+            else:
+                generate_grid()
+                return
+
+
 
     for i in range(HEIGHT):
         print(grid[i])
