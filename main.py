@@ -11,7 +11,7 @@ HEIGHT = 9
 WIDTH = 9
 
 numbers = range(1, WIDTH + 1)
-
+grid_complete=[]
 
 def generate_number():
     numbers_free = [x for x in numbers]
@@ -78,7 +78,7 @@ def generate_grid():
             numbers_free.remove(grid[1][i])
     else:
         generate_grid()
-        return grid
+        return
     for e in grid[1][:6]:
         if e not in numbers_free:
             if e not in grid[0][6:9]:
@@ -109,7 +109,7 @@ def generate_grid():
                 numbers_rows[2].append(grid[3][j])
         else:
             generate_grid()
-            return grid
+            return
     # LIGNE 2 et 3 du carré 1
     for a in range(4, 6):
         for i in range(0, 3):
@@ -121,7 +121,7 @@ def generate_grid():
                 grid[a][i] = random_append(numbers_free, numbers_rows[0])
             else:
                 generate_grid()
-                return grid
+                return
         # LIGNE 2 et 3 du carré 2
         for i in range(3, 6):
             numbers_free = generate_number()
@@ -133,7 +133,7 @@ def generate_grid():
                 grid[a][i] = random_append(numbers_free, numbers_rows[1])
             else:
                 generate_grid()
-                return grid
+                return
         # LIGNE 2 et 3 du carré 3
         for i in range(6, 9):
             numbers_free = generate_number()
@@ -145,7 +145,7 @@ def generate_grid():
                 grid[a][i] = random_append(numbers_free, numbers_rows[2])
             else:
                 generate_grid()
-                return grid
+                return
     "===========BOT=============="
     numbers_rows = [[], [], []]
     for j in range(0, 9):
@@ -166,7 +166,7 @@ def generate_grid():
                 numbers_rows[2].append(grid[6][j])
         else:
             generate_grid()
-            return grid
+            return
     # LIGNE 2 et 3 du carré 1
     for a in range(7, 9):
         for i in range(0, 3):
@@ -178,7 +178,7 @@ def generate_grid():
                 grid[a][i] = random_append(numbers_free, numbers_rows[0])
             else:
                 generate_grid()
-                return grid
+                return
         # LIGNE 2 et 3 du carré 2
         for i in range(3, 6):
             numbers_free = generate_number()
@@ -190,7 +190,7 @@ def generate_grid():
                 grid[a][i] = random_append(numbers_free, numbers_rows[1])
             else:
                 generate_grid()
-                return grid
+                return
         # LIGNE 2 et 3 du carré 3
         for i in range(6, 9):
             numbers_free = generate_number()
@@ -202,21 +202,20 @@ def generate_grid():
                 grid[a][i] = random_append(numbers_free, numbers_rows[2])
             else:
                 generate_grid()
-                return grid
+                return
 
-    return grid
+    for i in range(HEIGHT):
+        print(grid[i])
+        grid_complete.append(grid[i])
 
 
-grid_complete = generate_grid()
+generate_grid()
 grid_solution = copy.deepcopy(grid_complete)
 
 for i in range(0, 47):
     a = random.randint(0,8)
     b = random.randint(0,8)
     grid_complete[a][b] = ""
-
-for i in range(HEIGHT):
-    print(grid_complete[i])
-
+print("")
 for i in range(HEIGHT):
     print(grid_solution[i])
