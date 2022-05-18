@@ -5,6 +5,7 @@
 # dans un mini carré
 
 import random
+import copy
 
 HEIGHT = 9
 WIDTH = 9
@@ -207,5 +208,15 @@ def generate_grid():
 
 
 grid_complete = generate_grid()
-grid_solution = grid_complete.copy()
-print("fini")
+grid_solution = copy.deepcopy(grid_complete)
+
+for i in range(0, 47):
+    a = random.randint(0,8)
+    b = random.randint(0,8)
+    grid_complete[a][b] = ""
+
+for i in range(HEIGHT):
+    print(grid_complete[i])
+
+for i in range(HEIGHT):
+    print(grid_solution[i])
