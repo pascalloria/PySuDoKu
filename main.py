@@ -205,7 +205,7 @@ def generate_grid():
                 return
 
     for i in range(HEIGHT):
-        print(grid[i])
+        #print(grid[i])
         grid_complete.append(grid[i])
 
 
@@ -216,6 +216,14 @@ for i in range(0, 47):
     a = random.randint(0,8)
     b = random.randint(0,8)
     grid_complete[a][b] = ""
-print("")
+
+for i in range(HEIGHT):
+    print(grid_complete[i])
+
+print("====SOLUTION=========")
+
+
 for i in range(HEIGHT):
     print(grid_solution[i])
+
+    # pour vérifier faire une somme de chaque ligne / chaque colonne et / chaque carré
