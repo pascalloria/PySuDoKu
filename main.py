@@ -11,7 +11,8 @@ HEIGHT = 9
 WIDTH = 9
 
 numbers = range(1, WIDTH + 1)
-grid_complete=[]
+grid_complete = []
+
 
 def generate_number():
     numbers_free = [x for x in numbers]
@@ -36,6 +37,7 @@ def random_append(list1, list2):
 
 def generate_grid():
     grid = []
+
     for i in range(HEIGHT):
         # generate row with no duplicates HEIGHT time
         grid.append(random.sample(numbers, WIDTH))
@@ -72,13 +74,12 @@ def generate_grid():
         search_remove(e, numbers_free)
     for e in grid[1][:6]:
         search_remove(e, numbers_free)
-    if len(numbers_free) == 3:
-        for i in range(6, 9):
+    for i in range(6, 9):
+        if len(numbers_free) >= 1:
             grid[1][i] = random.choice(numbers_free)
             numbers_free.remove(grid[1][i])
-    else:
-        generate_grid()
-        return
+        else:
+            return
     for e in grid[1][:6]:
         if e not in numbers_free:
             if e not in grid[0][6:9]:
@@ -108,7 +109,6 @@ def generate_grid():
             else:
                 numbers_rows[2].append(grid[3][j])
         else:
-            generate_grid()
             return
     # LIGNE 2 et 3 du carré 1
     for a in range(4, 6):
@@ -120,7 +120,6 @@ def generate_grid():
             if len(numbers_free) >= 1:
                 grid[a][i] = random_append(numbers_free, numbers_rows[0])
             else:
-                generate_grid()
                 return
         # LIGNE 2 et 3 du carré 2
         for i in range(3, 6):
@@ -132,7 +131,6 @@ def generate_grid():
             if len(numbers_free) >= 1:
                 grid[a][i] = random_append(numbers_free, numbers_rows[1])
             else:
-                generate_grid()
                 return
         # LIGNE 2 et 3 du carré 3
         for i in range(6, 9):
@@ -144,7 +142,6 @@ def generate_grid():
             if len(numbers_free) >= 1:
                 grid[a][i] = random_append(numbers_free, numbers_rows[2])
             else:
-                generate_grid()
                 return
     "===========BOT=============="
     numbers_rows = [[], [], []]
@@ -165,7 +162,6 @@ def generate_grid():
             else:
                 numbers_rows[2].append(grid[6][j])
         else:
-            generate_grid()
             return
     # LIGNE 2 et 3 du carré 1
     for a in range(7, 9):
@@ -177,7 +173,6 @@ def generate_grid():
             if len(numbers_free) >= 1:
                 grid[a][i] = random_append(numbers_free, numbers_rows[0])
             else:
-                generate_grid()
                 return
         # LIGNE 2 et 3 du carré 2
         for i in range(3, 6):
@@ -189,7 +184,6 @@ def generate_grid():
             if len(numbers_free) >= 1:
                 grid[a][i] = random_append(numbers_free, numbers_rows[1])
             else:
-                generate_grid()
                 return
         # LIGNE 2 et 3 du carré 3
         for i in range(6, 9):
@@ -201,20 +195,19 @@ def generate_grid():
             if len(numbers_free) >= 1:
                 grid[a][i] = random_append(numbers_free, numbers_rows[2])
             else:
-                generate_grid()
                 return
-
     for i in range(HEIGHT):
-        #print(grid[i])
+        # print(grid[i])
         grid_complete.append(grid[i])
 
 
-generate_grid()
+while not len(grid_complete) > 1:
+    generate_grid()
 grid_solution = copy.deepcopy(grid_complete)
 
 for i in range(0, 47):
-    a = random.randint(0,8)
-    b = random.randint(0,8)
+    a = random.randint(0, 8)
+    b = random.randint(0, 8)
     grid_complete[a][b] = ""
 
 for i in range(HEIGHT):
@@ -222,8 +215,72 @@ for i in range(HEIGHT):
 
 print("====SOLUTION=========")
 
-
 for i in range(HEIGHT):
     print(grid_solution[i])
+"""============= TEST DE LA GRILLE GENERE============="""
 
-    # pour vérifier faire une somme de chaque ligne / chaque colonne et / chaque carré
+
+# pour vérifier faire une somme de chaque ligne / chaque colonne et / chaque carré et le résultat doit etre 45
+# test somme des éléments de la ligne
+def test_row(x):
+    somme = 0
+    for e in grid_solution[x]:
+        somme += e
+    return somme
+
+
+# test somme des éléments de la colonne
+def test_collumn(x):
+    somme = 0
+    for i in range(0, 9):
+        somme += grid_solution[i][x]
+    return somme
+
+
+# test somme des éléments du carré
+def test_square(x, y):
+    somme = 0
+    for i in range(x, x + 3):
+        for j in range(y, y + 3):
+            somme += grid_solution[i][j]
+    return somme
+
+
+# liste contenant les résultats des test
+row_tests = []
+collumn_tests = []
+square_tests = []
+# Test ligne et colonnes
+for i in range(0, 9):
+    if test_row(i) == 45:
+        row_tests.append(True)
+    else:
+        row_tests.append(False)
+    if test_collumn(i) == 45:
+        collumn_tests.append(True)
+    else:
+        collumn_tests.append(False)
+
+# liste contenant la position du coin supérieur gauche de chaque carré
+test_squares = [(0, 0), (0, 3), (0, 6), (3, 0), (3, 3), (3, 6), (6, 0), (6, 3), (6, 6)]
+# Test des carrés
+for square in test_squares:
+    x, y = square
+    if test_square(x, y) == 45:
+        square_tests.append(True)
+    else:
+        square_tests.append(False)
+
+print()
+# test ligne/ colonne / carrée
+"""if not False in row_tests:
+    print("Toutes les lignes sont correct")
+if not False in collumn_tests:
+    print("Toutes les colonnes sont correct")
+if not False in square_tests:
+    print("Tous les carrés sont correct")"""
+# test de tout les éléments en meme temps.
+if not False in row_tests and collumn_tests and square_tests:
+    print("La grille a été généré correctement")
+else:
+    print("Erreur : La grille n'a pas été généré correctement")
